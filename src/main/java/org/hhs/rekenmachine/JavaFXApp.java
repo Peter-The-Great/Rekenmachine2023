@@ -1,3 +1,4 @@
+package org.hhs.rekenmachine;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,7 +9,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import static javafx.scene.input.KeyEvent.KEY_PRESSED;
@@ -30,53 +30,36 @@ public class JavaFXApp extends Application {
     }
 
     protected int computeAdd (int number1, int number2) {
-        return 0;
+        return number1 + number2;
     }
 
     protected int computeMultiply (int number1, int number2) {
-        return 0;
+        return number1 * number2;
     }
 
     protected int computeDivide (int number1, int number2) {
-        return 0;
+        return number1 / number2;
     }
 
     private void compute (String operator) {
 
         int result;
-        int number1 = getNumberFromTextField (txtNumber1);
-        int number2 = getNumberFromTextField (txtNumber2);
+        int number1 = getNumberFromTextField(txtNumber1);
+        int number2 = getNumberFromTextField(txtNumber2);
 
-        switch (operator) {
-            case PLUS:
-                result = computeAdd (number1, number2);
-                break;
-            case MULTIPLY:
-                result = computeMultiply (number1, number2);
-                break;
-            case DIVIDE:
-                result = computeDivide (number1, number2);
-                break;
-            default:
-                result = 0;
-        }
+        result = switch (operator) {
+            case PLUS -> computeAdd(number1, number2);
+            case MULTIPLY -> computeMultiply(number1, number2);
+            case DIVIDE -> computeDivide(number1, number2);
+            default -> 0;
+        };
 
-        txtResult.setText (String.valueOf (result));
+        txtResult.setText(String.valueOf(result));
     }
 
-    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent> () {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            compute (((Button) mouseEvent.getSource()).getText ());
-        }
-    };
+    EventHandler<MouseEvent> mouseHandler = mouseEvent -> compute (((Button) mouseEvent.getSource()).getText ());
 
-    EventHandler<KeyEvent> keyHandler = new EventHandler<KeyEvent> () {
-        @Override
-        public void handle (KeyEvent keyEvent) {
-            compute(((Button) keyEvent.getSource ()).getText ());
-        }
-    };
+    EventHandler<KeyEvent> keyHandler = keyEvent -> compute(((Button) keyEvent.getSource ()).getText ());
 
     /*
      * Er wordt een label toegevoegd aan het scherm.
